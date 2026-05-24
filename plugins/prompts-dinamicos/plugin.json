@@ -1,0 +1,8 @@
+{
+  "name": "Prompts Dinâmicos",
+  "description": "Aciona prompts customizados quando o contato envia palavras-chave. Substitui o system prompt e descarta o histórico anterior à ativação. Funciona apenas em conversas individuais.",
+  "version": "1.0.0",
+  "icon": "💬",
+  "author": "WhatsBot",
+  "file": "prompts-dinamicos.zip"
+}
