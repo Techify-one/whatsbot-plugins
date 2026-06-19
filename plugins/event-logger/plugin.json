@@ -1,0 +1,8 @@
+{
+  "name": "Event Logger",
+  "description": "Plugin de referência para o bus de eventos. Assina o wildcard \"*\" e loga cada evento que passa pelo WhatsBot. Útil para entender o ciclo de vida e debugar.",
+  "version": "1.1.0",
+  "icon": "📜",
+  "author": "WhatsBot",
+  "file": "event-logger.zip"
+}

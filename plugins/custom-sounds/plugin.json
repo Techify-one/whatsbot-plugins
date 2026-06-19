@@ -1,0 +1,8 @@
+{
+  "name": "Sons de Notificação",
+  "description": "Envie seus próprios sons (.mp3/.ogg/.wav) e escolha qual será tocado nas notificações do painel. Integra-se ao sistema de notificações nativo.",
+  "version": "1.0.0",
+  "icon": "🔊",
+  "author": "WhatsBot",
+  "file": "custom-sounds.zip"
+}

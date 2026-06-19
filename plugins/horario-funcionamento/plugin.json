@@ -1,0 +1,8 @@
+{
+  "name": "Horário de Funcionamento",
+  "description": "Define um horário de funcionamento por dia da semana. Fora do horário a IA para de responder e envia uma mensagem de ausência, com cooldown por contato.",
+  "version": "1.0.0",
+  "icon": "🕒",
+  "author": "WhatsBot",
+  "file": "horario-funcionamento.zip"
+}

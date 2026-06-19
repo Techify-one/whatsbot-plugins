@@ -1,0 +1,8 @@
+{
+  "name": "Transcrição por Grupo",
+  "description": "Controla individualmente a transcrição de áudio e descrição de imagem em cada grupo. Usa os filters filter.transcription.should_run + filter.transcription.result.",
+  "version": "2.0.0",
+  "icon": "🎙️",
+  "author": "WhatsBot",
+  "file": "transcricao-grupos.zip"
+}

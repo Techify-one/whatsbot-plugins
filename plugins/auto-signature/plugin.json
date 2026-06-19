@@ -1,0 +1,8 @@
+{
+  "name": "Auto Signature",
+  "description": "Adiciona uma assinatura no fim de cada parte de toda resposta enviada (IA, operador manual, @ia privado). Exemplo de filter interceptive.",
+  "version": "1.0.0",
+  "icon": "✍️",
+  "author": "WhatsBot",
+  "file": "auto-signature.zip"
+}
