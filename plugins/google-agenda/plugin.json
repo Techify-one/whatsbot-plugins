@@ -1,0 +1,8 @@
+{
+  "name": "Google Agenda",
+  "description": "Conector genérico de Google Calendar via Service Account: vincula uma agenda, espelha eventos, consulta freebusy e detecta mudanças feitas direto no Google (sync reverso).",
+  "version": "0.1.0",
+  "icon": "📅",
+  "author": "Escola da Automação",
+  "file": "google-agenda.zip"
+}
