@@ -1,0 +1,8 @@
+{
+  "name": "Boas-vindas em Grupos",
+  "description": "Quando alguém entra num grupo ativado, aguarda alguns segundos e marca a pessoa com @ pedindo que ela se apresente. Grupos desativados por padrão.",
+  "version": "1.0.0",
+  "icon": "👋",
+  "author": "WhatsBot",
+  "file": "boas-vindas.zip"
+}
