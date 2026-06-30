@@ -1,0 +1,218 @@
+flowchart TB
+  banner["`**TUTORIAL: Plugins do WhatsBot**
+  Importe tudo de uma vez. Leia de cima para baixo,
+  seguindo as setas tracejadas - proximo.`"]
+
+  subgraph CAP1["Cap. 1 - Ecossistema e repositorios"]
+    direction TB
+    c1_t["`**Este repo e so a LOJA** - fonte de dados.
+    Quem RODA o plugin sao os apps backend.`"]
+    c1_e1["`**whatsbot-plugins** - ESTE repo
+    Guarda plugin.json - card - e .zip - codigo. Nao roda nada.`"]
+    c1_e2["`**whatsbot-pages** - vitrine /plugins
+    Le este repo via GitHub API. Cache 5 min.`"]
+    c1_e3["`**whatsbot-pro** - app Pro
+    Motor completo: RBAC, lifecycle, auditoria.`"]
+    c1_e4["`**whatsbot** - Community
+    Mesmo motor, mais enxuto. Sem RBAC/lifecycle/audit.`"]
+    c1_autor["Autor do plugin"]
+    c1_loja["whatsbot-plugins - plugin.json + .zip"]
+    c1_page["whatsbot-pages - pagina /plugins"]
+    c1_pro["whatsbot-pro - RODA"]
+    c1_comm["whatsbot Community - RODA"]
+    c1_t --- c1_e1 --- c1_e2 --- c1_e3 --- c1_e4
+    c1_autor -->|"push main"| c1_loja
+    c1_loja -->|"GitHub API"| c1_page
+    c1_page -->|"download"| c1_autor
+    c1_autor -->|"instala .zip"| c1_pro
+    c1_autor -->|"instala .zip"| c1_comm
+  end
+
+  subgraph CAP2["Cap. 2 - Anatomia de um plugin"]
+    direction TB
+    c2_a1["`**ATENCAO - 2 arquivos**
+    plugin.json - na loja - so o card.
+    plugin.yaml - dentro do .zip - o manifesto real.`"]
+    c2_yaml["plugin.yaml - entry"]
+    c2_ev["events.py - EVENT_HANDLERS"]
+    c2_fi["filters.py - FILTERS"]
+    c2_ro["routes.py - router REST"]
+    c2_se["settings.py - Settings"]
+    c2_to["tools.py - CORE_TOOLS"]
+    c2_pr["prompts.py - PROMPT_FRAGMENTS"]
+    c2_li["lifecycle.py - setup/teardown - so Pro"]
+    c2_mg["migrations/*.sql - tabelas plugin_id_*"]
+    c2_sc["static/*.js - tela Preact"]
+    c2_a1 --- c2_yaml
+    c2_yaml -->|"events"| c2_ev
+    c2_yaml -->|"filters"| c2_fi
+    c2_yaml -->|"routes"| c2_ro
+    c2_yaml -->|"settings"| c2_se
+    c2_yaml -->|"tools"| c2_to
+    c2_yaml -->|"prompts"| c2_pr
+    c2_yaml -->|"lifecycle"| c2_li
+    c2_yaml -.->|"migrations"| c2_mg
+    c2_yaml -.->|"screens"| c2_sc
+  end
+
+  subgraph CAP3["Cap. 3 - Ciclo de carregamento no boot"]
+    direction TB
+    c3_n["`Habilitar/desabilitar e flag no banco - nao apaga a pasta.
+    Migrations rodam em ordem. Erro fica isolado - app sobe.`"]
+    c3_start([Boot do servidor])
+    c3_man{"plugin.yaml valido?"}
+    c3_err["Registra load_error e pula"]
+    c3_en{"Habilitado?"}
+    c3_skip["So descobre - nao carrega"]
+    c3_deps["Instala deps pip - 1a vez"]
+    c3_imp["Importa modulos do entry"]
+    c3_migr["Roda migrations pendentes"]
+    c3_rbac["Sincroniza RBAC - so Pro"]
+    c3_reg["Registra rotas e telas"]
+    c3_setup["lifecycle.setup - so Pro"]
+    c3_done([Plugin ativo])
+    c3_n --- c3_start
+    c3_start --> c3_man
+    c3_man -->|"nao"| c3_err
+    c3_man -->|"sim"| c3_en
+    c3_en -->|"nao"| c3_skip
+    c3_en -->|"sim"| c3_deps
+    c3_deps --> c3_imp --> c3_migr --> c3_rbac --> c3_reg --> c3_setup --> c3_done
+  end
+
+  subgraph CAP4["Cap. 4 - Eventos vs Filters - o coracao"]
+    direction TB
+    c4_ev0["`**EVENTOS - o plugin OBSERVA**
+    Exporta EVENT_HANDLERS. Fire-and-forget.
+    Nao altera o fluxo. Erro nao afeta o core.`"]
+    c4_core1["Core - emit group.joined"]
+    c4_bus["Event bus"]
+    c4_h1["Handler do plugin A"]
+    c4_h2["Handler do plugin B"]
+    c4_ev0 --- c4_core1
+    c4_core1 --> c4_bus
+    c4_bus -->|"task isolada"| c4_h1
+    c4_bus -->|"task isolada"| c4_h2
+    c4_fi0["`**FILTERS - o plugin MODIFICA**
+    Exporta FILTERS. Intercepta o valor em transito.
+    Retornar None ABORTA a acao.`"]
+    c4_core2["Core - apply_filter reply.part"]
+    c4_f1["Filter prio 50"]
+    c4_f2["Filter prio 100"]
+    c4_volta["Core usa o resultado"]
+    c4_fi0 --- c4_core2
+    c4_core2 --> c4_f1
+    c4_f1 -->|"valor mudado"| c4_f2
+    c4_f2 -->|"valor final"| c4_volta
+  end
+
+  subgraph CAP5["Cap. 5 - Contexto e servicos no ctx"]
+    direction TB
+    c5_plugin["Codigo do plugin"]
+    c5_db["plugin_db - tabelas plugin_id_*"]
+    c5_ws["broadcast - painel ao vivo"]
+    c5_cfg["config_repo - Settings plugin.id.*"]
+    c5_ag["ctx.handler - AgentHandler IA"]
+    c5_gowa["cliente GOWA - enviar WhatsApp"]
+    c5_life["on_unload - cleanup - so Pro"]
+    c5_sup["spawn_task - tasks/subprocessos - so Pro"]
+    c5_plugin --> c5_db
+    c5_plugin --> c5_ws
+    c5_plugin --> c5_cfg
+    c5_plugin --> c5_ag
+    c5_plugin --> c5_gowa
+    c5_plugin --> c5_life
+    c5_plugin --> c5_sup
+  end
+
+  subgraph CAP6["Cap. 6 - Fluxos reais"]
+    direction TB
+    c6a_h["`**6a. Filter Auto Signature**`"]
+    c6a_1["Core chama apply_filter reply.part"]
+    c6a_2["Plugin le Settings e source"]
+    c6a_3["Plugin devolve texto + assinatura"]
+    c6a_4["Core envia o texto assinado"]
+    c6a_h --- c6a_1 --> c6a_2 --> c6a_3 --> c6a_4
+    c6b_h["`**6b. Evento Boas-vindas**`"]
+    c6b_1["Webhook - alguem entrou no grupo"]
+    c6b_2["Core - emit group.participants_changed"]
+    c6b_3["Plugin - grupo habilitado?"]
+    c6b_4["Plugin - thread espera o delay"]
+    c6b_5["Envia via GOWA marcando a pessoa com @"]
+    c6b_6["Salva e faz broadcast - aparece no painel"]
+    c6b_h --- c6b_1 --> c6b_2 --> c6b_3 --> c6b_4 --> c6b_5 --> c6b_6
+  end
+
+  subgraph CAP7["Cap. 7 - Passo a passo para criar"]
+    direction TB
+    c7_1["`**1.** Crie a pasta meu_plugin - id snake_case`"]
+    c7_2["`**2.** Escreva o plugin.yaml - id, version, entry`"]
+    c7_3["`**3.** Implemente events/filters/migrations/settings`"]
+    c7_4["`**4.** Teste local - Pro e/ou Community`"]
+    c7_5["`**5.** Empacote - zipe a pasta`"]
+    c7_6["`**6.** Publique - plugin.json + .zip neste repo`"]
+    c7_fim(["Aparece em /plugins em ate 5 min"])
+    c7_regra["`**Regra de ouro:** nao toque no core.
+    Eventos observam - filters modificam -
+    tabelas plugin_id_ guardam estado - broadcast atualiza a UI.`"]
+    c7_1 --> c7_2 --> c7_3 --> c7_4 --> c7_5 --> c7_6 --> c7_fim --> c7_regra
+  end
+
+  banner -.->|"comece aqui"| c1_t
+  c1_t -.->|"proximo"| c2_a1
+  c2_a1 -.->|"proximo"| c3_n
+  c3_n -.->|"proximo"| c4_ev0
+  c4_ev0 -.->|"proximo"| c5_plugin
+  c5_plugin -.->|"proximo"| c6a_h
+  c6a_h -.->|"proximo"| c7_1
+
+  classDef bannerC fill:#5f3dc4,stroke:#3b2080,stroke-width:4px,color:#ffffff;
+  classDef titleC fill:#d0bfff,stroke:#7048e8,stroke-width:2px,color:#3b2080;
+  classDef noteC fill:#fff9db,stroke:#f59f00,stroke-width:2px,color:#5f3a00;
+  classDef lojaC fill:#ffe066,stroke:#f59f00,stroke-width:2px,color:#5f3a00;
+  classDef pageC fill:#ffd8a8,stroke:#e8590c,stroke-width:2px,color:#7a2e00;
+  classDef proC fill:#b2f2bb,stroke:#2f9e44,stroke-width:2px,color:#13491f;
+  classDef commC fill:#a5d8ff,stroke:#1971c2,stroke-width:2px,color:#0b3a66;
+  classDef manC fill:#ffe066,stroke:#f59f00,stroke-width:3px,color:#5f3a00;
+  classDef evC fill:#a5d8ff,stroke:#1971c2,stroke-width:2px,color:#0b3a66;
+  classDef fiC fill:#d0bfff,stroke:#7048e8,stroke-width:2px,color:#3b2080;
+  classDef apiC fill:#96f2d7,stroke:#0ca678,stroke-width:2px,color:#0a4a3a;
+  classDef aiC fill:#ffc9c9,stroke:#e03131,stroke-width:2px,color:#7a1212;
+  classDef dataC fill:#dee2e6,stroke:#868e96,stroke-width:2px,color:#343a40;
+  classDef decC fill:#ffec99,stroke:#f08c00,stroke-width:3px,color:#5f3a00;
+  classDef startC fill:#d0bfff,stroke:#7048e8,stroke-width:2px,color:#3b2080;
+  classDef errC fill:#ffc9c9,stroke:#e03131,stroke-width:2px,color:#7a1212;
+  classDef okC fill:#b2f2bb,stroke:#2f9e44,stroke-width:3px,color:#13491f;
+  classDef stepC fill:#a5d8ff,stroke:#1971c2,stroke-width:2px,color:#0b3a66;
+
+  class banner bannerC;
+  class c1_t,c4_ev0,c4_fi0,c6a_h,c6b_h titleC;
+  class c1_e1,c1_e2,c1_e3,c1_e4,c1_autor,c2_a1,c3_n,c7_regra noteC;
+  class c1_loja,c2_mg,c2_sc lojaC;
+  class c1_page,c2_ro,c2_se pageC;
+  class c1_pro,c2_li,c5_life,c5_sup proC;
+  class c1_comm commC;
+  class c2_yaml manC;
+  class c2_ev,c2_pr evC;
+  class c2_fi fiC;
+  class c2_to aiC;
+  class c3_man,c3_en decC;
+  class c3_start,c3_done startC;
+  class c3_err errC;
+  class c3_skip pageC;
+  class c3_deps,c3_imp,c3_migr,c3_rbac,c3_reg,c3_setup stepC;
+  class c4_core1,c4_core2 pageC;
+  class c4_bus,c4_h1,c4_h2 evC;
+  class c4_f1,c4_f2 fiC;
+  class c4_volta okC;
+  class c5_plugin manC;
+  class c5_db dataC;
+  class c5_ws evC;
+  class c5_cfg pageC;
+  class c5_ag aiC;
+  class c5_gowa apiC;
+  class c6a_1,c6a_4,c6b_2,c6b_6 pageC;
+  class c6a_2,c6a_3,c6b_3,c6b_4,c6b_5 fiC;
+  class c6b_1 apiC;
+  class c7_1,c7_2,c7_3,c7_4,c7_5,c7_6 stepC;
+  class c7_fim okC;

@@ -1,0 +1,39 @@
+flowchart TB
+  titulo["`**Cap. 4 - Eventos vs Filters**
+  Os 2 ganchos do plugin. Principio: nao tocar no core.`"]
+
+  subgraph EV["EVENTOS - o plugin OBSERVA"]
+    ev0["`Exporta EVENT_HANDLERS.
+    Fire-and-forget. Nao altera o fluxo.
+    Erro num handler nao afeta o core.`"]
+    core1["Core - emit group.joined"] --> bus["Event bus"]
+    bus -->|"task isolada"| h1["Handler do plugin A"]
+    bus -->|"task isolada"| h2["Handler do plugin B"]
+  end
+
+  subgraph FI["FILTERS - o plugin MODIFICA"]
+    fi0["`Exporta FILTERS.
+    Intercepta o valor em transito.
+    Retornar None ABORTA a acao.`"]
+    core2["Core - apply_filter reply.part"] --> f1["Filter prio 50"]
+    f1 -->|"valor mudado"| f2["Filter prio 100"]
+    f2 -->|"valor final"| volta["Core usa o resultado"]
+  end
+
+  titulo --> EV
+  titulo --> FI
+
+  classDef titleC fill:#7048e8,stroke:#3b2080,stroke-width:3px,color:#ffffff;
+  classDef noteC fill:#fff9db,stroke:#f59f00,stroke-width:2px,color:#5f3a00;
+  classDef coreC fill:#ffd8a8,stroke:#e8590c,stroke-width:2px,color:#7a2e00;
+  classDef evC fill:#a5d8ff,stroke:#1971c2,stroke-width:2px,color:#0b3a66;
+  classDef fiC fill:#d0bfff,stroke:#7048e8,stroke-width:2px,color:#3b2080;
+  classDef okC fill:#b2f2bb,stroke:#2f9e44,stroke-width:2px,color:#13491f;
+  class titulo titleC;
+  class ev0,fi0 noteC;
+  class core1,core2 coreC;
+  class bus,h1,h2 evC;
+  class f1,f2 fiC;
+  class volta okC;
+  style EV fill:#e7f5ff,stroke:#1971c2,stroke-width:2px;
+  style FI fill:#f3f0ff,stroke:#7048e8,stroke-width:2px;

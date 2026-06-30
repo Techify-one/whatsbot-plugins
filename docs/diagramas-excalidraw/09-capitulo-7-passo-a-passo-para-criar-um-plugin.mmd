@@ -1,0 +1,34 @@
+flowchart TB
+  titulo["`**Cap. 7 - Criar um plugin**
+  Do zero ate publicar na loja.`"]
+
+  p1["`**1.** Crie a pasta meu_plugin
+  nome snake_case = id`"]
+  p2["`**2.** Escreva o plugin.yaml
+  id, name, version, whatsbot_api_version, entry`"]
+  p3["`**3.** Implemente as capacidades
+  events / filters / migrations / settings`"]
+  p4["`**4.** Teste local
+  instale no app Pro e/ou Community`"]
+  p5["`**5.** Empacote
+  zipe o conteudo da pasta`"]
+  p6["`**6.** Publique na loja
+  plugin.json + .zip neste repo, push main`"]
+  fim(["`Aparece em /plugins
+  em ate 5 minutos`"])
+
+  regra["`**Regra de ouro:** nao toque no core.
+  Eventos para observar - filters para modificar -
+  tabelas plugin_id_ para estado - broadcast para a UI.`"]
+
+  titulo --> p1 --> p2 --> p3 --> p4 --> p5 --> p6 --> fim
+  fim --> regra
+
+  classDef titleC fill:#7048e8,stroke:#3b2080,stroke-width:3px,color:#ffffff;
+  classDef stepC fill:#a5d8ff,stroke:#1971c2,stroke-width:2px,color:#0b3a66;
+  classDef okC fill:#b2f2bb,stroke:#2f9e44,stroke-width:3px,color:#13491f;
+  classDef regraC fill:#ffe066,stroke:#f59f00,stroke-width:3px,color:#5f3a00;
+  class titulo titleC;
+  class p1,p2,p3,p4,p5,p6 stepC;
+  class fim okC;
+  class regra regraC;

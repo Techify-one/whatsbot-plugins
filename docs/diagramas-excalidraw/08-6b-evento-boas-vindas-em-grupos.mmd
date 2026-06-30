@@ -1,0 +1,26 @@
+sequenceDiagram
+  autonumber
+  box rgb(150,242,215) WhatsApp
+  participant GOWA as Webhook
+  end
+  box rgb(255,216,168) Core
+  participant Core as Core
+  participant Bus as Event bus
+  end
+  box rgb(165,216,255) Plugin
+  participant P as Plugin boas_vindas
+  end
+  box rgb(222,226,230) Infra
+  participant DB as plugin_boas_vindas
+  participant WA as Cliente GOWA
+  end
+
+  GOWA->>Core: alguem entrou no grupo
+  Core->>Bus: emit group.participants_changed
+  Bus->>P: on_participants_changed
+  P->>DB: grupo esta habilitado?
+  DB-->>P: sim
+  P->>P: thread - espera o delay
+  P->>WA: send_message - marca a pessoa com @
+  P->>Core: salva e faz broadcast new_message
+  Note over P,Core: mensagem aparece no painel ao vivo

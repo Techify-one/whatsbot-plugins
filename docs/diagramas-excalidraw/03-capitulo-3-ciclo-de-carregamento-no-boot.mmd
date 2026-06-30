@@ -1,0 +1,46 @@
+flowchart TB
+  titulo["`**Cap. 3 - Ciclo de carregamento**
+  No boot, o loader varre storages/plugins e carrega
+  cada plugin HABILITADO. Erro fica isolado.`"]
+
+  subgraph Notas["Pontos-chave"]
+    n1["`Habilitar/desabilitar e um flag no banco.
+    Nao apaga a pasta.`"]
+    n2["`Migrations rodam em ordem 001, 002...
+    Tabelas sempre com prefixo plugin_id_.`"]
+    n3["`Plugin com erro registra load_error
+    e o app sobe mesmo assim.`"]
+  end
+
+  subgraph Fluxo["Sequencia do loader"]
+    start([Boot do servidor]) --> man{"plugin.yaml valido?"}
+    man -->|"nao"| err1["Registra load_error e pula"]
+    man -->|"sim"| en{"Habilitado?"}
+    en -->|"nao"| skip["So descobre - nao carrega"]
+    en -->|"sim"| deps["Instala deps pip - 1a vez"]
+    deps --> imp["Importa modulos do entry"]
+    imp --> migr["Roda migrations pendentes"]
+    migr --> rbac["Sincroniza RBAC - so Pro"]
+    rbac --> reg["Registra rotas e telas"]
+    reg --> setup["lifecycle.setup - so Pro"]
+    setup --> done([Plugin ativo])
+  end
+
+  titulo --> Notas --> Fluxo
+
+  classDef titleC fill:#7048e8,stroke:#3b2080,stroke-width:3px,color:#ffffff;
+  classDef noteC fill:#fff9db,stroke:#f59f00,stroke-width:2px,color:#5f3a00;
+  classDef startC fill:#d0bfff,stroke:#7048e8,stroke-width:2px,color:#3b2080;
+  classDef decC fill:#ffec99,stroke:#f08c00,stroke-width:3px,color:#5f3a00;
+  classDef procC fill:#a5d8ff,stroke:#1971c2,stroke-width:2px,color:#0b3a66;
+  classDef errC fill:#ffc9c9,stroke:#e03131,stroke-width:2px,color:#7a1212;
+  classDef skipC fill:#ffd8a8,stroke:#e8590c,stroke-width:2px,color:#7a2e00;
+  classDef okC fill:#b2f2bb,stroke:#2f9e44,stroke-width:3px,color:#13491f;
+  class titulo titleC;
+  class n1,n2,n3 noteC;
+  class start startC;
+  class man,en decC;
+  class deps,imp,migr,rbac,reg,setup procC;
+  class err1 errC;
+  class skip skipC;
+  class done okC;

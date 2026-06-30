@@ -1,0 +1,14 @@
+sequenceDiagram
+  autonumber
+  box rgb(255,216,168) Core
+  participant Core as Core - envio
+  participant Bus as apply_filter
+  end
+  box rgb(208,191,255) Plugin
+  participant P as Plugin auto_signature
+  end
+  Core->>Bus: apply_filter reply.part - texto
+  Bus->>P: add_signature ctx, texto
+  P->>P: le Settings e ctx.extras source
+  P-->>Bus: texto + assinatura
+  Bus-->>Core: texto assinado - usado no envio

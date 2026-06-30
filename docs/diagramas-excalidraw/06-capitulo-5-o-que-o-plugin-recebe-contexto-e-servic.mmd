@@ -1,0 +1,33 @@
+flowchart TB
+  titulo["`**Cap. 5 - Contexto e servicos**
+  Todo handler recebe um ctx com acesso a estes recursos.`"]
+
+  subgraph Recursos["Servicos disponiveis no ctx"]
+    plugin["Codigo do plugin"]
+    plugin -->|"ctx.plugin_db()"| db["Tabelas plugin_id_* - engine compartilhado"]
+    plugin -->|"broadcast(evento, dados)"| ws["WebSocket - painel ao vivo"]
+    plugin -->|"config_repo get/set"| cfg["Settings persistidas - plugin.id.*"]
+    plugin -->|"ctx.handler"| ag["AgentHandler - IA, mencoes, envio"]
+    plugin -->|"group_mentions._client"| gowa["Cliente GOWA - enviar WhatsApp"]
+    plugin -->|"ctx.on_unload - so Pro"| life["Cleanup no teardown"]
+    plugin -->|"ctx.spawn_task - so Pro"| sup["Tasks e subprocessos supervisionados"]
+  end
+
+  titulo --> Recursos
+
+  classDef titleC fill:#7048e8,stroke:#3b2080,stroke-width:3px,color:#ffffff;
+  classDef plugC fill:#ffe066,stroke:#f59f00,stroke-width:3px,color:#5f3a00;
+  classDef dbC fill:#dee2e6,stroke:#868e96,stroke-width:2px,color:#343a40;
+  classDef wsC fill:#a5d8ff,stroke:#1971c2,stroke-width:2px,color:#0b3a66;
+  classDef cfgC fill:#ffd8a8,stroke:#e8590c,stroke-width:2px,color:#7a2e00;
+  classDef agC fill:#ffc9c9,stroke:#e03131,stroke-width:2px,color:#7a1212;
+  classDef gowaC fill:#96f2d7,stroke:#0ca678,stroke-width:2px,color:#0a4a3a;
+  classDef proC fill:#b2f2bb,stroke:#2f9e44,stroke-width:2px,color:#13491f;
+  class titulo titleC;
+  class plugin plugC;
+  class db dbC;
+  class ws wsC;
+  class cfg cfgC;
+  class ag agC;
+  class gowa gowaC;
+  class life,sup proC;

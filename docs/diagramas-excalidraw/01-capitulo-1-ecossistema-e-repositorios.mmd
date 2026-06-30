@@ -1,0 +1,48 @@
+flowchart TB
+  titulo["`**Cap. 1 - Ecossistema e repositorios**
+  Este repo e so a LOJA - fonte de dados.
+  Quem RODA o plugin sao os apps backend.`"]
+
+  subgraph Explicacao["O que e cada repo"]
+    e1["`**whatsbot-plugins** - ESTE repo
+    Guarda plugin.json - card - e .zip - codigo.
+    Nao executa nada.`"]
+    e2["`**whatsbot-pages**
+    Vitrine em whatsbot.techify.one/plugins.
+    Le este repo via GitHub API. Cache 5 min.`"]
+    e3["`**whatsbot-pro**
+    App backend Pro. Motor completo:
+    RBAC, lifecycle, auditoria.`"]
+    e4["`**whatsbot** - Community
+    Mesmo motor, mais enxuto.
+    Sem RBAC, lifecycle e audit.`"]
+  end
+
+  subgraph Fluxo["Caminho do plugin ate rodar"]
+    autor["Autor do plugin"]
+    loja["whatsbot-plugins - plugin.json + .zip"]
+    page["whatsbot-pages - pagina /plugins"]
+    pro["whatsbot-pro - RODA"]
+    comm["whatsbot Community - RODA"]
+    autor -->|"push main"| loja
+    loja -->|"GitHub API"| page
+    page -->|"download"| autor
+    autor -->|"instala .zip"| pro
+    autor -->|"instala .zip"| comm
+  end
+
+  titulo --> Explicacao --> Fluxo
+
+  classDef titleC fill:#7048e8,stroke:#3b2080,stroke-width:3px,color:#ffffff;
+  classDef noteC fill:#fff9db,stroke:#f59f00,stroke-width:2px,color:#5f3a00;
+  classDef lojaC fill:#ffe066,stroke:#f59f00,stroke-width:2px,color:#5f3a00;
+  classDef pageC fill:#ffd8a8,stroke:#e8590c,stroke-width:2px,color:#7a2e00;
+  classDef proC fill:#b2f2bb,stroke:#2f9e44,stroke-width:2px,color:#13491f;
+  classDef commC fill:#a5d8ff,stroke:#1971c2,stroke-width:2px,color:#0b3a66;
+  class titulo titleC;
+  class e1,e2,e3,e4 noteC;
+  class autor noteC;
+  class loja lojaC;
+  class page pageC;
+  class pro proC;
+  class comm commC;

@@ -1,0 +1,27 @@
+flowchart LR
+  subgraph Eventos["Eventos mais usados"]
+    ke["`message.received - message.sent
+    message.persisted - message.reaction
+    group.participants_changed - group.joined
+    call.received - connection.changed
+    conversation.created - conversation.status_changed
+    contact.tagged - tag.created
+    llm.before/after - tool.before/after
+    Especiais: asterisco e message.any`"]
+  end
+  subgraph Filters["Filters mais usados"]
+    kf["`filter.webhook.payload
+    filter.message.before_save
+    filter.transcription.should_run / result
+    filter.contact.tags
+    filter.system_prompt - filter.llm.messages
+    filter.llm.tools
+    filter.tool.args / result
+    filter.reply.raw / parts / part
+    filter.event.before_emit`"]
+  end
+
+  classDef evC fill:#a5d8ff,stroke:#1971c2,stroke-width:2px,color:#0b3a66;
+  classDef fiC fill:#d0bfff,stroke:#7048e8,stroke-width:2px,color:#3b2080;
+  class ke evC;
+  class kf fiC;

@@ -1,0 +1,48 @@
+flowchart TB
+  titulo["`**Cap. 2 - Anatomia de um plugin**
+  Pasta com nome = id. O .zip contem o manifesto
+  e os modulos de cada capacidade.`"]
+
+  subgraph Aviso["Atencao - 2 arquivos diferentes"]
+    a1["`**plugin.json** - na loja
+    So o card: nome, icone, qual .zip baixar.`"]
+    a2["`**plugin.yaml** - dentro do .zip
+    O manifesto REAL que o app le:
+    id, entry, screens, migrations.`"]
+  end
+
+  subgraph Mapa["entry: liga cada arquivo a uma capacidade"]
+    yaml["plugin.yaml - entry"]
+    yaml -->|"events"| ev["events.py - EVENT_HANDLERS"]
+    yaml -->|"filters"| fi["filters.py - FILTERS"]
+    yaml -->|"routes"| ro["routes.py - router REST"]
+    yaml -->|"settings"| se["settings.py - Settings"]
+    yaml -->|"tools"| to["tools.py - CORE_TOOLS"]
+    yaml -->|"prompts"| pr["prompts.py - PROMPT_FRAGMENTS"]
+    yaml -->|"lifecycle"| li["lifecycle.py - setup/teardown - so Pro"]
+    yaml -.->|"migrations"| mg["migrations/*.sql - tabelas plugin_id_*"]
+    yaml -.->|"screens"| sc["static/*.js - tela Preact"]
+  end
+
+  titulo --> Aviso --> Mapa
+
+  classDef titleC fill:#7048e8,stroke:#3b2080,stroke-width:3px,color:#ffffff;
+  classDef noteC fill:#fff9db,stroke:#f59f00,stroke-width:2px,color:#5f3a00;
+  classDef manC fill:#ffe066,stroke:#f59f00,stroke-width:3px,color:#5f3a00;
+  classDef evC fill:#a5d8ff,stroke:#1971c2,stroke-width:2px,color:#0b3a66;
+  classDef fiC fill:#d0bfff,stroke:#7048e8,stroke-width:2px,color:#3b2080;
+  classDef apiC fill:#96f2d7,stroke:#0ca678,stroke-width:2px,color:#0a4a3a;
+  classDef cfgC fill:#ffd8a8,stroke:#e8590c,stroke-width:2px,color:#7a2e00;
+  classDef aiC fill:#ffc9c9,stroke:#e03131,stroke-width:2px,color:#7a1212;
+  classDef proC fill:#b2f2bb,stroke:#2f9e44,stroke-width:2px,color:#13491f;
+  classDef dataC fill:#dee2e6,stroke:#868e96,stroke-width:2px,color:#343a40;
+  class titulo titleC;
+  class a1,a2 noteC;
+  class yaml manC;
+  class ev evC;
+  class fi fiC;
+  class ro apiC;
+  class se cfgC;
+  class to,pr aiC;
+  class li proC;
+  class mg,sc dataC;
