@@ -1,0 +1,8 @@
+{
+  "name": "Clínica Vida Leve",
+  "description": "Sistema de agendamento online para clínica estética — profissionais, serviços, horários, pagamento pelo Mercado Pago e lembretes automáticos via WhatsApp.",
+  "version": "0.1.1",
+  "icon": "💆",
+  "author": "Escola da Automação",
+  "file": "clinica.zip"
+}
