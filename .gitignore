@@ -1,2 +1,6 @@
 # Screenshots crus de trabalho — podem conter credenciais/dados sensíveis.
 prints/
+
+# Segredos locais — NUNCA versionar
+.env
+.env.*
