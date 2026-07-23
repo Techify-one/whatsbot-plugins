@@ -1,0 +1,8 @@
+{
+  "name": "WhatsBot MCP",
+  "description": "Expõe contatos e ações selecionadas do WhatsBot por MCP universal, com OAuth 2.1, tokens revogáveis, confirmação e idempotência nas escritas.",
+  "version": "1.2.2",
+  "icon": "🔌",
+  "author": "Francisco Neto",
+  "file": "whatsbot-mcp.zip"
+}
