@@ -1,7 +1,7 @@
 {
   "name": "Monitor de Conexão (Telegram)",
   "description": "Faz polling do status do WhatsApp e avisa no Telegram quando o número cai (queda de rede, sessão deslogada ou serviço fora do ar). Tenta reconectar sozinho quando a sessão ainda está viva.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "icon": "📡",
   "author": "WhatsBot",
   "file": "monitor-conexao.zip"
