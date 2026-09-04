@@ -1,0 +1,8 @@
+{
+  "name": "Retorno Automático (IA)",
+  "description": "Quando um contato atendido pela IA fica em silêncio por N horas dentro do expediente, posta uma nota privada no painel e, por padrão, já aciona a IA para responder de verdade ao cliente no chat — repete até um limite de tentativas; a resposta do cliente zera tudo.",
+  "version": "1.1.0",
+  "icon": "🔔",
+  "author": "WhatsBot",
+  "file": "retorno-automatico.zip"
+}

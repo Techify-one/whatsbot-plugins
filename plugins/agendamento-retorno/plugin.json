@@ -1,0 +1,8 @@
+{
+  "name": "Agendamento de Retorno",
+  "description": "Agenda mensagens de retorno (follow-up) para um contato e dispara automaticamente na hora marcada — manual ou pela própria IA, que aprende a marcar o retorno dela quando o cliente pede para ser chamado depois.",
+  "version": "1.0.0",
+  "icon": "⏰",
+  "author": "WhatsBot",
+  "file": "agendamento-retorno.zip"
+}
