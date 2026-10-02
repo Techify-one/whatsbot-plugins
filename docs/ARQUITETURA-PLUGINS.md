@@ -28,7 +28,7 @@ flowchart LR
   end
 
   subgraph Pagina["whatsbot-pages (Cloudflare Worker)"]
-    page["whatsbot.techify.one/plugins"]
+    page["techify.one/whatsbot/plugins"]
   end
 
   subgraph Apps["Apps backend (instalam e RODAM o plugin)"]
@@ -415,7 +415,7 @@ sequenceDiagram
 5. **Empacote** o conteúdo da pasta num `.zip`.
 6. **Publique na loja**: crie `plugins/meu-plugin/` neste repo com o `.zip` + um
    `plugin.json` (card) apontando o arquivo, e dê `push` na `main`. Em até 5 min
-   aparece em `whatsbot.techify.one/plugins`.
+   aparece em `techify.one/whatsbot/plugins`.
 
 > Regra de ouro do isolamento: **não toque no core**. Use eventos para observar,
 > filters para modificar, tabelas com prefixo `plugin_<id>_` para o estado, e

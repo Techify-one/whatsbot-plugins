@@ -4,7 +4,7 @@ Repositório oficial de plugins do **WhatsBot** — extensões que adicionam nov
 
 Os plugins listados aqui ficam disponíveis para download em:
 
-**https://whatsbot.techify.one/plugins**
+**https://techify.one/whatsbot/plugins**
 
 A página lê automaticamente este repositório via GitHub API. Basta seguir a estrutura abaixo que o plugin aparece lá sem precisar editar nada na página.
 
