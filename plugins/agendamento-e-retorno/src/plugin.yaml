@@ -1,0 +1,52 @@
+id: agendamento_e_retorno
+name: Agendamento e Retorno
+version: 1.0.0
+whatsbot_api_version: ">=1.3,<2.0"
+description: >-
+  Reúne em um só plugin o Agendamento de Retorno e o Retorno Automático (IA). Um único
+  verificador roda a cada minuto e cuida dos dois. AGENDAMENTO — um botão "Agendar" na barra
+  do contato, dentro da conversa, abre o modal para marcar um retorno (Agendar Retorno e Lista
+  de Agendamentos); no vencimento o atendente recebe uma nota privada de lembrete. A própria
+  IA também marca o retorno dela quando o cliente pede para ser chamado depois ("me chama
+  amanhã às 9"): no vencimento ela é acionada de verdade, escreve e envia a mensagem —
+  respeitando o toggle de IA do contato, uma antecedência mínima, um horizonte máximo e um
+  limite de retornos seguidos sem resposta. RETORNO AUTOMÁTICO — quando um contato atendido
+  pela IA fica em silêncio por N minutos dentro do expediente, posta uma nota privada e, por
+  padrão, aciona a IA para retomar a conversa; repete até um limite e a resposta do cliente
+  zera tudo. OS DOIS JUNTOS — contato com retorno agendado ativo não recebe também o retorno
+  automático; os dois enviam pelo mesmo caminho e usam o mesmo anti-loop (a IA não agenda
+  outro retorno no meio de um turno proativo). As configurações ficam em duas abas no botão
+  "Configurar": Agendamento e Retorno automático. Substitui os plugins agendamento_retorno e
+  retorno_automatico — com o retorno_automatico antigo ainda habilitado, o automático deste
+  fica pausado para não duplicar.
+short_description: >-
+  Agenda retornos (manual e pela IA) e retoma conversas em silêncio — um verificador só, com
+  botão "Agendar" na conversa.
+author: WhatsBot
+entry:
+  routes: routes
+  tools: tools
+  events: events
+  filters: filters
+  settings: settings
+migrations: migrations
+screens:
+  # Aba de configuração do plugin (modal "Configurar" em Gerenciar Plugins), com 2 abas.
+  - id: agendamento-e-retorno-config
+    title: Agendamento e Retorno
+    path: /agendamento-e-retorno
+    icon: calendar-clock
+    component: /plugins/agendamento_e_retorno/static/config.js
+    config: true
+# Botão "Agendar" na barra do contato (slot chat.header.actions, API >= 1.3).
+frontend_extends: /plugins/agendamento_e_retorno/static/extends.js
+events:
+  - app.startup
+  - app.shutdown
+filters:
+  - filter.message.outgoing
+  - filter.llm.messages
+permissions:
+  - db.write
+  - llm.tool
+dependencies: []

@@ -1,0 +1,8 @@
+{
+  "name": "Agendamento e Retorno",
+  "description": "Agenda retornos (manual pelo botão \"Agendar\" na conversa, ou pela própria IA) e retoma automaticamente contatos em silêncio — tudo com um verificador só. Une e substitui os plugins Agendamento de Retorno e Retorno Automático (IA). Requer WhatsBot-Lite com API de plugins 1.3+.",
+  "version": "1.0.0",
+  "icon": "📅",
+  "author": "WhatsBot",
+  "file": "agendamento-e-retorno.zip"
+}
